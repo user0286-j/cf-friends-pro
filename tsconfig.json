@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "outDir": "./src/scripts",
+        "rootDir": "./typescript",
+        "strict": true
+    }
+}
