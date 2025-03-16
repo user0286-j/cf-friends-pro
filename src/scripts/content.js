@@ -9,6 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var table = document.querySelector("#pageContent > div.datatable > div:nth-child(6) > table");
+function init() {
+    // obtener ID
+    let id;
+    // TODO verificar que exista datos almacenados
+    chrome.storage.local.get(["id"]).then((result) => {
+        if (result.id == undefined) {
+            console.log("No se encuentra id, se creará uno por defecto");
+            chrome.storage.local.set({ "id": -1 });
+            id = -1;
+        }
+        else {
+            id = result.id;
+            console.log(`Id ${id}`);
+        }
+    });
+    // obtener dato del último contest
+}
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -22,6 +39,7 @@ function get_last_contest(handle, ms) {
         return data;
     });
 }
+init();
 if (table) {
     const names = [];
     const fila = table.rows;
@@ -36,7 +54,7 @@ if (table) {
             const tr = document.createElement("tr");
             tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
             tabla.appendChild(tr);
-            get_last_contest(name, index * 1000);
+            //get_last_contest(name, index*1000); //FIXME que no sejecute al mismo tiempo
         });
         contenido.appendChild(tabla);
     }

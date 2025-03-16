@@ -1,5 +1,26 @@
 var table = document.querySelector<HTMLTableElement>("#pageContent > div.datatable > div:nth-child(6) > table");
 
+function init(){
+    // obtener ID
+    let id: number;
+    // TODO verificar que exista datos almacenados
+    chrome.storage.local.get(["id"]).then((result) => {
+        if (result.id == undefined){
+            console.log("No se encuentra id, se creará uno por defecto");
+            chrome.storage.local.set({"id": -1});
+            id = -1;
+        }else{
+            id = result.id;
+            console.log(`Id ${id}`);
+        }
+    });
+
+    // obtener dato del último contest
+    
+    
+
+}
+
 function delay(ms: number){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -13,6 +34,7 @@ async function get_last_contest(handle: string, ms: number){
     return data;
 }
 
+init();
 
 if (table){
 
@@ -31,7 +53,8 @@ if (table){
             const tr = document.createElement("tr");
             tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
             tabla.appendChild(tr);
-            get_last_contest(name, index*1000);
+            //get_last_contest(name, index*1000); //FIXME que no sejecute al mismo tiempo
+
         });
         contenido.appendChild(tabla);
     }else{

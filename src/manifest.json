@@ -19,5 +19,8 @@
                 "https://codeforces.com/friends"
             ]
         }
+    ],
+    "permissions":[
+        "storage"
     ]
 }
