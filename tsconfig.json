@@ -3,6 +3,7 @@
         "module": "CommonJS",
         "outDir": "./src/scripts",
         "rootDir": "./typescript",
-        "strict": true
+        "strict": true,
+        "target": "ES6"
     }
 }
