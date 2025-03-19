@@ -115,6 +115,7 @@ function crear_tabla() {
                 const tabla = document.createElement("table");
                 names.forEach((name, index) => {
                     const tr = document.createElement("tr");
+                    tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
                     try {
                         chrome.storage.local.get([name]).then((result) => {
                             // ? revisamos si existe 
@@ -124,10 +125,10 @@ function crear_tabla() {
                                 get_last_contest(name, 100).then((results) => {
                                     if (results) {
                                         const contest = results["contestName"];
-                                        const nRating = results["newRating"];
+                                        const nRating = results["newRating"] - results["oldRating"];
                                         console.log("hola", name, nRating);
                                         console.log(results["newRating"]);
-                                        tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">${results["newRating"]}</td>`;
+                                        tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">${nRating}</td>`;
                                         let cambio = result[name];
                                         cambio.rating = nRating;
                                         cambio.reset = false;
@@ -147,8 +148,9 @@ function crear_tabla() {
                     }
                     catch (error) {
                         // ! Mandamos el error que no se pudo cargar
-                        console.error(`Error: ${error}`);
                         tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
+                        //tabla.appendChild(tr);
+                        console.error(`Error: ${error}`);
                     }
                     tabla.appendChild(tr);
                 });
