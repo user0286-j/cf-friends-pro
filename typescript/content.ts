@@ -1,5 +1,21 @@
 // ^ iniciamos los datos
 
+// ^ declaramos colores
+enum rango{
+    unrated = "#000000",
+    newbie = "#cccccc",
+    pupil = "#78ff77",
+    specialist = "#78ddbb",
+    expert = "#aaaaff",
+    cm = "#aaaaff",
+    master = "#ffcc88",
+    im = "#ffbb55",
+    grandmaster = "#ffbb55",
+    igm = "#ff3333",
+    lgm = "#ff3333",
+    winner = "#ffffff"
+}
+
 let reset = false;
 var table = document.querySelector<HTMLTableElement>("#pageContent > div.datatable > div:nth-child(6) > table");
 
@@ -105,8 +121,10 @@ async function crear_tabla(){
 
         const contenido = document.querySelector<HTMLDivElement>("#pageContent");
         if (contenido){
-            
-            const tabla = document.createElement("table");
+            const div = document.createElement("div");
+            div.classList.add("datatable");
+            const tabla = document.createElement("table");  
+            const tbody = document.createElement("tbody");
             names.forEach((name: string, index: number) => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
@@ -145,9 +163,11 @@ async function crear_tabla(){
                     console.error(`Error: ${error}`);
                     
                 }
-                tabla.appendChild(tr);
+                tbody.appendChild(tr);
+                tabla.appendChild(tbody);
+                div.appendChild(tabla);
             });
-            contenido.appendChild(tabla);
+            contenido.appendChild(div);
         }else{
             alert("la extensión no se puede cargar :(");
         }

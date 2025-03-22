@@ -112,7 +112,10 @@ function crear_tabla() {
             });
             const contenido = document.querySelector("#pageContent");
             if (contenido) {
+                const div = document.createElement("div");
+                div.classList.add("datatable");
                 const tabla = document.createElement("table");
+                const tbody = document.createElement("tbody");
                 names.forEach((name, index) => {
                     const tr = document.createElement("tr");
                     tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
@@ -152,9 +155,11 @@ function crear_tabla() {
                         //tabla.appendChild(tr);
                         console.error(`Error: ${error}`);
                     }
-                    tabla.appendChild(tr);
+                    tbody.appendChild(tr);
+                    tabla.appendChild(tbody);
+                    div.appendChild(tabla);
                 });
-                contenido.appendChild(tabla);
+                contenido.appendChild(div);
             }
             else {
                 alert("la extensión no se puede cargar :(");
