@@ -71,7 +71,7 @@ class contenidoTr{
                     ${this.rating}
                 </td>
                 
-                <td class="dark right">
+                <td class="dark right" style = "border-left: 1px solid #e4e4e4">
                     ${this.change}
                 </td>
                 `;
