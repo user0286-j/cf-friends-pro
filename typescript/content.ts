@@ -16,6 +16,68 @@ enum rango{
     winner = "#ffffff"
 }
 
+function getcolor(rating: number): string{
+    if (rating === 0){
+        return rango.unrated;
+    }else if (rating < 1200){
+        return rango.newbie;
+    }else if (rating < 1400){
+        return rango.pupil;
+    }else if (rating < 1600){
+        return rango.specialist;
+    }else if (rating < 1900){
+        return rango.expert;
+    }else if (rating < 2100){
+        return rango.cm;
+    }else if (rating < 2300){
+        return rango.master;
+    }else if (rating < 2400){
+        return rango.im;
+    }else if (rating < 2600){
+        return rango.grandmaster;
+    }else if (rating < 3000){
+        return rango.igm;
+    }else if (rating < 4000){
+        return rango.lgm;
+    }
+    return rango.winner;
+}
+
+class contenidoTr{
+    id: number;
+    nombre: string;
+    change: number| string;
+    rating: number;
+
+    constructor (id: number = 0, nombre: string = "", change: number | string = "last", rating: number = 0){
+        this.id = id;
+        this.nombre = nombre;
+        this.change = change;
+        this.rating = rating;
+    }
+
+    toString(): string {
+        return `<td class="dark left">
+                    ${this.id}
+                </td>\n
+
+                <td style="text-align:left;" class="dark">
+                    <a href="${"./profile/" + this.nombre}" style="color:${getcolor(this.rating)}; text-decoration:none">
+                        <b>${this.nombre}</b>
+                    </a>
+                </td>\n
+
+                <td class="dark right">
+                    ${this.rating}
+                </td>
+                
+                <td class="dark right">
+                    ${this.change}
+                </td>
+                `;
+    }
+}
+
 let reset = false;
 var table = document.querySelector<HTMLTableElement>("#pageContent > div.datatable > div:nth-child(6) > table");
 
@@ -113,6 +175,7 @@ async function crear_tabla(){
                     chrome.storage.local.set({[name]: {
                         "reset": true,
                         "contestname": "void", // TODO Esto lo hago después creo
+                        "change": 0,
                         "rating": 0
                     }});
                 }
@@ -127,7 +190,9 @@ async function crear_tabla(){
             const tbody = document.createElement("tbody");
             names.forEach((name: string, index: number) => {
                 const tr = document.createElement("tr");
-                tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
+                let contenido_tr = new contenidoTr(index, name);
+                // tr.innerHTML = `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark"><a href="${"./profile/" + name}"><b>${name}</b></a></td>\n<td class="dark right">last</td>`;
+                tr.innerHTML = contenido_tr.toString();
 
                 try{
                     chrome.storage.local.get([name]).then((result) => {
@@ -139,13 +204,17 @@ async function crear_tabla(){
                                 if (results){
                                     const contest = results["contestName"];
                                     const nRating = results["newRating"] - results["oldRating"];
+                                    const ratingn = results["newRating"];
                                     console.log("hola", name, nRating);
                                     console.log(results["newRating"]);
-                                    tr.innerHTML =  `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">${nRating}</td>`;
+                                    contenido_tr = new contenidoTr(index, name, nRating, ratingn);
+                                    tr.innerHTML = contenido_tr.toString();
+                                    //tr.innerHTML =  `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark"><a style=""; href="${"./profile/" + name}"><b>${name}</b></a></td>\n<td class="dark right">${nRating}</td>`;
                                     let cambio = result[name];
-                                    cambio.rating = nRating;
+                                    cambio.change = nRating;
                                     cambio.reset = false;
                                     cambio.contestname = contest;
+                                    cambio.rating = ratingn;
                                     chrome.storage.local.set({[name]: cambio});
                                 }else{
                                     throw new Error("No se pudo acceder al sistema");
@@ -153,12 +222,16 @@ async function crear_tabla(){
                             });
                         }else{
                             console.log("datos guardados");
-                            tr.innerHTML =  `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">${result[name]["rating"]}</td>`;
+                            contenido_tr = new contenidoTr(index, name,result[name]["change"], result[name]["rating"]);
+                            tr.innerHTML = contenido_tr.toString();
+                            //tr.innerHTML =  `<td class="dark left">${index}</td>\n<td style="text-align:left; color:${getcolor(result[name]["rating"])};" class="dark"><a href="${"./profile/" + name}"><b>${name}</b></a></td>\n<td class="dark right">${result[name]["change"]}</td>`;
                         }
                     });
                 }catch(error){
                     // ! Mandamos el error que no se pudo cargar
-                    tr.innerHTML =  `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark">${name}</td>\n<td class="dark right">last</td>`;
+                    contenido_tr = new contenidoTr(index, name);
+                    tr.innerHTML = contenido_tr.toString();
+                    //tr.innerHTML =  `<td class="dark left">${index}</td>\n<td style="text-align:left;" class="dark"><a href="${"./profile/" + name}"><b>${name}</b></a></td>\n<td class="dark right">last</td>`;
                     //tabla.appendChild(tr);
                     console.error(`Error: ${error}`);
                     
@@ -176,11 +249,14 @@ async function crear_tabla(){
     }else{
         console.log("tabla no encontrada");
     }
+    table?.style.setProperty("display", "none");
+    
 }
 
 async function ejecutar(){
     await init();
     await crear_tabla();
 }
+
 
 ejecutar();

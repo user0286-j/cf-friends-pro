@@ -1,7 +1,7 @@
 {
     "name": "Coodeforces friends pro",
     "description": "más datos de tus amigos",
-    "version": "0.3",
+    "version": "0.6.2",
     "manifest_version" : 3,
     "action": {
         "default_popup": "hello.html"
