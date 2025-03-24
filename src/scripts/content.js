@@ -17,7 +17,7 @@ var rango;
     rango["pupil"] = "#78ff77";
     rango["specialist"] = "#78ddbb";
     rango["expert"] = "#aaaaff";
-    rango["cm"] = "#aaaaff";
+    rango["cm"] = "#ff88ff";
     rango["master"] = "#ffcc88";
     rango["im"] = "#ffbb55";
     rango["grandmaster"] = "#ffbb55";

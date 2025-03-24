@@ -7,7 +7,7 @@ enum rango{
     pupil = "#78ff77",
     specialist = "#78ddbb",
     expert = "#aaaaff",
-    cm = "#aaaaff",
+    cm = "#ff88ff",
     master = "#ffcc88",
     im = "#ffbb55",
     grandmaster = "#ffbb55",
