@@ -69,7 +69,7 @@ class contenidoTr {
         this.rating = rating;
     }
     toString() {
-        return `<td class="dark left" style="width: 10px;">
+        return `<td class="dark left">
                     ${this.id + 1}
                 </td>\n
 

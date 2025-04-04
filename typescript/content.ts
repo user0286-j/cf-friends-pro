@@ -57,7 +57,7 @@ class contenidoTr{
     }
 
     toString(): string {
-        return `<td class="dark left" style="width: 10px;">
+        return `<td class="dark left">
                     ${this.id+1}
                 </td>\n
 
